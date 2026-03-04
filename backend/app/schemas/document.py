@@ -18,6 +18,17 @@ class DocumentType(str, Enum):
 
 
 class Transaction(BaseModel):
+    date: str
+    description: str
+    debit: float = 0.0
+    credit: float = 0.0
+    balance: float = 0.0
+    currency: str = "INR"
+    reference_id: str | None = None
+    bank_name: str | None = None
+    category: str | None = None
+    transaction_hash: str
+
     TransactionID: str | None = None
     Date: str
     Description: str
@@ -33,6 +44,11 @@ class Transaction(BaseModel):
 
 class ParseDocumentResponse(BaseModel):
     document_id: str
+    bank_name: str | None = None
+    confidence_score: int = Field(ge=0, le=100)
+    transactions: list[Transaction]
+    needs_review: bool
+
     document_type: DocumentType
     confidence_score: float = Field(ge=0.0, le=1.0)
     normalized_data: dict[str, Any]
@@ -43,3 +59,12 @@ class ExportRequest(BaseModel):
     export_format: str
     columns: list[str] = Field(default_factory=list)
     include_metadata: bool = True
+
+
+class LegacyParseDocumentResponse(BaseModel):
+    document_id: str
+    document_type: DocumentType
+    confidence_score: float = Field(ge=0.0, le=1.0)
+    normalized_data: dict[str, Any]
+    needs_human_review: bool
+
