@@ -2,6 +2,7 @@ import pytest
 
 pytest.importorskip("pydantic")
 
+
 from app.schemas.document import DocumentType
 from app.services.parsers.pipeline import DocumentPipeline, ParseContext
 

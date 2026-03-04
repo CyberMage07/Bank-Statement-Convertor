@@ -29,6 +29,18 @@ class Transaction(BaseModel):
     category: str | None = None
     transaction_hash: str
 
+    TransactionID: str | None = None
+    Date: str
+    Description: str
+    Debit: float | None = 0.0
+    Credit: float | None = 0.0
+    Balance: float | None = None
+    Currency: str = "INR"
+    ReferenceID: str | None = None
+    AccountNumber: str | None = None
+    BankName: str | None = None
+    Category: str | None = None
+
 
 class ParseDocumentResponse(BaseModel):
     document_id: str
@@ -36,6 +48,11 @@ class ParseDocumentResponse(BaseModel):
     confidence_score: int = Field(ge=0, le=100)
     transactions: list[Transaction]
     needs_review: bool
+
+    document_type: DocumentType
+    confidence_score: float = Field(ge=0.0, le=1.0)
+    normalized_data: dict[str, Any]
+    needs_human_review: bool
 
 
 class ExportRequest(BaseModel):
@@ -50,3 +67,4 @@ class LegacyParseDocumentResponse(BaseModel):
     confidence_score: float = Field(ge=0.0, le=1.0)
     normalized_data: dict[str, Any]
     needs_human_review: bool
+
